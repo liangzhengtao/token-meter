@@ -78,14 +78,33 @@ class SessionWatcher extends EventEmitter {
       if (!fs.statSync(workspacePath).isDirectory()) continue;
       const sessionDirs = fs.readdirSync(workspacePath);
       for (const sessionDir of sessionDirs) {
-        const wireFile = path.join(workspacePath, sessionDir, 'agents', 'main', 'wire.jsonl');
-        if (fs.existsSync(wireFile)) {
+        const sessionPath = path.join(workspacePath, sessionDir);
+        // Watch main agent
+        const mainWire = path.join(sessionPath, 'agents', 'main', 'wire.jsonl');
+        if (fs.existsSync(mainWire)) {
           files.push({
             agent: 'kimi-code',
-            file: wireFile,
+            file: mainWire,
             sessionId: sessionDir,
             workspace,
           });
+        }
+        // Also watch sub-agent directories for real-time updates
+        const agentsDir = path.join(sessionPath, 'agents');
+        if (fs.existsSync(agentsDir)) {
+          const agents = fs.readdirSync(agentsDir);
+          for (const agentDir of agents) {
+            if (agentDir === 'main') continue; // already added
+            const subWire = path.join(agentsDir, agentDir, 'wire.jsonl');
+            if (fs.existsSync(subWire)) {
+              files.push({
+                agent: 'kimi-code',
+                file: subWire,
+                sessionId: `${sessionDir}/${agentDir}`,
+                workspace,
+              });
+            }
+          }
         }
       }
     }
@@ -331,10 +350,10 @@ class SessionWatcher extends EventEmitter {
       }
     }
 
-    // Start polling for changes
+    // Start polling for changes (200ms for responsive updates)
     this._interval = setInterval(() => {
       this._checkForUpdates();
-    }, 500);
+    }, 200);
   }
 
   /**
