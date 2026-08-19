@@ -1,6 +1,12 @@
 <div align="center">
 
+<img src=".banner.svg" width="100%" alt="banner">
+
+</div>
+
 # ⚡ Token Meter
+
+<div align="center">
 
 **AI 编程 Agent 实时 Token 消耗监控。看着你的 Token 在烧。**
 

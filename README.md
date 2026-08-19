@@ -1,6 +1,12 @@
 <div align="center">
 
+<img src=".banner.svg" width="100%" alt="banner">
+
+</div>
+
 # ⚡ Token Meter
+
+<div align="center">
 
 **Real-time token cost meter for AI coding agents. Watch your tokens burn as it happens.**
 
