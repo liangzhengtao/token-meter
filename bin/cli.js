@@ -7,6 +7,7 @@ const { program } = require('commander');
 const chalk = require('chalk');
 const { SessionWatcher } = require('../src/watcher');
 const { LiveDisplay } = require('../src/display');
+const { StatusBar } = require('../src/statusbar');
 
 const pkg = require(path.join(__dirname, '..', 'package.json'));
 
@@ -18,9 +19,11 @@ program
   .option('-i, --interval <ms>', 'Refresh interval in milliseconds', '1000')
   .option('--no-banner', 'Hide the banner')
   .option('-s, --session <id>', 'Watch specific session ID')
+  .option('--bar', 'Status bar mode (lightweight, bottom of terminal)')
   .addHelpText('after', `
 ${chalk.bold('Examples:')}
-  $ ${chalk.cyan('token-meter')}                       # Auto-detect and watch all
+  $ ${chalk.cyan('token-meter')}                       # Full dashboard mode
+  $ ${chalk.cyan('token-meter --bar')}                 # Status bar mode (bottom of terminal)
   $ ${chalk.cyan('token-meter -a kimi-code')}          # Watch Kimi Code sessions
   $ ${chalk.cyan('token-meter -a claude-code')}        # Watch Claude Code sessions
   $ ${chalk.cyan('token-meter -a codex')}              # Watch Codex sessions
@@ -42,14 +45,25 @@ const opts = program.opts();
 
 async function main() {
   const watcher = new SessionWatcher({ agent: opts.agent });
-  const display = new LiveDisplay({ showBanner: opts.banner, interval: parseInt(opts.interval) });
 
   // Handle graceful exit
   process.on('SIGINT', () => {
-    display.stop();
+    if (display) display.stop();
     watcher.stop();
     process.exit(0);
   });
+
+  let display;
+
+  if (opts.bar) {
+    // Status bar mode
+    display = new StatusBar({ interval: parseInt(opts.interval) });
+    console.log(chalk.dim('  token-meter status bar active (Ctrl+C to exit)'));
+    console.log(chalk.dim('  ───────────────────────────────────────────────'));
+  } else {
+    // Full dashboard mode
+    display = new LiveDisplay({ showBanner: opts.banner, interval: parseInt(opts.interval) });
+  }
 
   // Start watching
   watcher.on('update', (data) => {
