@@ -40,17 +40,37 @@ A live dashboard that shows:
 # Install globally
 npm install -g token-meter
 
-# Auto-detect and watch all agents
+# Full dashboard mode (takes over the terminal)
 token-meter
 
+# Status bar mode (lightweight, bottom of terminal) ← Recommended
+token-meter --bar
+
 # Watch specific agent
-token-meter -a kimi-code
+token-meter --bar -a kimi-code
 token-meter -a claude-code
 token-meter -a codex
 
 # Refresh every 500ms
-token-meter -i 500
+token-meter --bar -i 500
 ```
+
+## Status Bar Mode
+
+The status bar mode shows a single line at the bottom of your terminal:
+
+```
+│ ⚡ 18:30:22 │ T:1.5M │ $4.54 │ M:7 │ TL:9 │ S:252 │ YOU: 请帮我检查一下项目... │
+```
+
+- **T:1.5M** — Total tokens consumed
+- **$4.54** — Estimated cost
+- **M:7** — Messages in current session
+- **TL:9** — Tool calls made
+- **S:252** — Sessions detected
+- **YOU/AI/TL** — Last event (user message, AI response, or tool call)
+
+Perfect for running alongside your AI agent without blocking your view.
 
 ## What It Looks Like
 
@@ -85,7 +105,8 @@ Options:
   -a, --agent <type>    Agent type (kimi-code, claude-code, codex, opencode)
   -i, --interval <ms>   Refresh interval in milliseconds (default: 1000)
   -s, --session <id>    Watch specific session ID
-  --no-banner           Hide the banner
+  --bar                 Status bar mode (lightweight, bottom of terminal)
+  --no-banner           Hide the banner (full mode only)
   -h, --help            Display help
   -V, --version         Display version
 ```

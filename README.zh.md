@@ -40,17 +40,37 @@ npx token-meter
 # 全局安装
 npm install -g token-meter
 
-# 自动检测并监控所有 Agent
+# 完整仪表盘模式（占据整个终端）
 token-meter
 
+# 状态栏模式（轻量，终端底部一行）← 推荐
+token-meter --bar
+
 # 监控指定 Agent
-token-meter -a kimi-code
+token-meter --bar -a kimi-code
 token-meter -a claude-code
 token-meter -a codex
 
 # 每 500ms 刷新一次
-token-meter -i 500
+token-meter --bar -i 500
 ```
+
+## 状态栏模式
+
+状态栏模式在终端底部显示一行：
+
+```
+│ ⚡ 18:30:22 │ T:1.5M │ $4.54 │ M:7 │ TL:9 │ S:252 │ 你: 请帮我检查一下项目... │
+```
+
+- **T:1.5M** — 总 Token 消耗
+- **$4.54** — 预估花费
+- **M:7** — 当前会话消息数
+- **TL:9** — 工具调用次数
+- **S:252** — 检测到的会话数
+- **你/AI/工具** — 最近一条事件
+
+完美配合 AI Agent 使用，不遮挡你的视野。
 
 ## 输出效果
 
@@ -85,7 +105,8 @@ token-meter [选项]
   -a, --agent <type>    Agent 类型 (kimi-code, claude-code, codex, opencode)
   -i, --interval <ms>   刷新间隔毫秒 (默认: 1000)
   -s, --session <id>    监控指定会话 ID
-  --no-banner           隐藏横幅
+  --bar                 状态栏模式（轻量，终端底部一行）
+  --no-banner           隐藏横幅（仅完整模式）
   -h, --help            显示帮助
   -V, --version         显示版本
 ```
