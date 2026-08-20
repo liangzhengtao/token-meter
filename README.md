@@ -11,8 +11,14 @@
 **Real-time token cost meter for AI coding agents. Watch your tokens burn as it happens.**
 
 [![npm](https://img.shields.io/npm/v/token-meter.svg)](https://www.npmjs.com/package/token-meter)
+[![npm](https://img.shields.io/npm/dt/token-meter.svg)](https://www.npmjs.com/package/token-meter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/liangzhengtao/token-meter.svg)](https://github.com/liangzhengtao/token-meter)
 
+</div>
+
+<div align="center">
+<img src=".demo.svg" width="100%" alt="demo">
 </div>
 
 ---
